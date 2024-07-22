@@ -61,7 +61,7 @@ First, we need to load the data and vizualize them. To do this task, we can use 
 ```bash
 python 1-Load-data-and-vizualize.py
 ```
-![Alt text](Target_vizualization.png)
+![Alt text](Target_visualization.png)
 The code will show you how the data are sparsed. Surprinsingly, depicted on the Figure above, we can observe that most of the data are related to the "no case", which can cause a bias in our analysis. In that case, we will need to homogeneize the data in order to have an equal number between the yes and no data.
 
 ### 2. Homogeneize the data and train a first classification model
