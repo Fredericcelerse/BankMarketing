@@ -6,5 +6,5 @@ For each project I will release with the time, I will create a new specific bran
 
 ## Branches
 
-- [Project 1 - Portuguese Banking Marketing Campaigns] (https://github.com/Fredericcelerse/BankMarketing/tree/Portuguese_Banking_Marketing_Campaigns) 
+- [Project 1 - Portuguese Banking Marketing Campaigns] (https://github.com/Fredericcelerse/BankMarketing/tree/Portuguese_Banking_Marketing_Campaigns)   
   **Description:** This branch contains my work based on a Bank Marketing database. Goals include data cleaning/vizualisation, features selections and highlighting with AI classification models the importance to homogeneize data.
