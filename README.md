@@ -33,7 +33,7 @@ conda activate myMarketAnalysis
 
 Once the environment is properly created, install the necessary Python libraries to execute the code:
 ```
-pip install numpy pandas scikit-learn numpy pandas scipy
+pip install numpy pandas scikit-learn scipy
 ```
 
 ### Database
