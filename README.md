@@ -81,6 +81,32 @@ To do this task, we use the script called [2-Data-Selection-and-training.py](2-D
 python 2-Data-Selection-and-training.py
 ```
 
+![Alt text](PCA.png)   
+
+First, the "no" data are projected on the 2D environment generated thanks to the PCA algorithm
+
+![Alt text](Confusion_matrix.png)   
+
+The SVM model is trained and shows good accuracy, as depicted by the confusion matrix above and the result in the terminal:
+```
+Optimized Accuracy: 0.9521531100478469
+Optimized Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.94      0.97      0.95       108
+           1       0.97      0.93      0.95       101
+
+    accuracy                           0.95       209
+   macro avg       0.95      0.95      0.95       209
+weighted avg       0.95      0.95      0.95       209
+```
+
+And also for the transfer on the unknown "no" data:
+
+```
+Accuracy on remaining no_data: 0.8588674906582351
+```
+
 ### 3. Studying the influence of classification models
 
 ## Code and jupyter notebook available
