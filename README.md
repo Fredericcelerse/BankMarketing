@@ -61,10 +61,25 @@ First, we need to load the data and vizualize them. To do this task, we can use 
 ```bash
 python 1-Load-data-and-vizualize.py
 ```
-![Alt text](Target_visualization.png)
+![Alt text](Target_visualization.png)   
+
 The code will show you how the data are sparsed. Surprinsingly, depicted on the Figure above, we can observe that most of the data are related to the "no case", which can cause a bias in our analysis. In that case, we will need to homogeneize the data in order to have an equal number between the yes and no data.
 
 ### 2. Homogeneize the data and train a first classification model
+
+If we decide to train a model based on these data, we will overfit our data, with a very good accuracy on the "no cases" but a very poor accuracy on the "yes cases". To have more details and see how it looks like, we made it in the jupyternotebook of Kaggle, available here: https://www.kaggle.com/code/celerse/bank-marketing-features-selections-and-acc-0-99   
+
+Here, we only focus on developing the best strategy based on the data selection. To do so:
+- We first select the best "no" data based on a PCA analysis and extract the most diverse one in order to create a subset made of 50% of "yes cases" and 50% of "no cases".
+- We create best features by combining the already existed features (this method comes from our previous analysis on other databases: https://github.com/Fredericcelerse/DataConsistency/tree/main)
+- We train an SVM classification model based on these data
+- We evaluate the accuracy and test the accuracy on the remaining "no cases" that were not included in the training/test data.
+
+To do this task, we use the script called [2-Data-Selection-and-training.py](2-Data-Selection-and-training.py) by typing:
+
+```bash
+python 2-Data-Selection-and-training.py
+```
 
 ### 3. Studying the influence of classification models
 
