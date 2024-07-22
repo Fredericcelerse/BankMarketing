@@ -109,6 +109,73 @@ Accuracy on remaining no_data: 0.8588674906582351
 
 ### 3. Studying the influence of classification models
 
+However, while it seems to achieve a good accuracy, the result of 0.86 is strongly dependant on the random seed we are using, meaning that the result is not reproducible. For instance, if you change the seeds at the begining of the code, you will obtain another result, and this one will oscilate between 0.63 and 0.93 (from the experiments I made).
+
+**What can you think ?**
+
+It simply means that the data can offer a good accuracy, but that the model is not the best suitable one for this task.
+
+**What alternative can we propose ?***
+
+Instead of using SVM, we can resort to Random Forest classification algorithm, which are known to be less sensitive to the data quality, which is indeed one of the issue we are treating here with this database.   
+To do so, we can use the script [3-RandomForest.py](3-RandomForest.py), that we can launch in our terminal as:
+
+```bash
+python 3-RandomForest.py
+```
+
+The script is doing the same tasks as [2-Data-Selection-and-training.py](2-Data-Selection-and-training.py), we just replaced the SVM part at the end by the Random Forest. We then obtain:
+
+```
+Training 1:
+Optimized Accuracy: 1.0
+Training 2:
+Optimized Accuracy: 1.0
+Training 3:
+Optimized Accuracy: 1.0
+Training 4:
+Optimized Accuracy: 1.0
+Training 5:
+Optimized Accuracy: 1.0
+Training 6:
+Optimized Accuracy: 1.0
+Training 7:
+Optimized Accuracy: 1.0
+Training 8:
+Optimized Accuracy: 1.0
+Training 9:
+Optimized Accuracy: 1.0
+Training 10:
+Optimized Accuracy: 1.0
+```
+
+and 
+
+```
+Test 1
+Accuracy on remaining no_data: 0.9896521989077322
+Test 2
+Accuracy on remaining no_data: 0.9905145156654211
+Test 3
+Accuracy on remaining no_data: 0.9902270767461915
+Test 4
+Accuracy on remaining no_data: 0.992239149180799
+Test 5
+Accuracy on remaining no_data: 0.9913768324231101
+Test 6
+Accuracy on remaining no_data: 0.992239149180799
+Test 7
+Accuracy on remaining no_data: 0.992239149180799
+Test 8
+Accuracy on remaining no_data: 0.9896521989077322
+Test 9
+Accuracy on remaining no_data: 0.992239149180799
+Test 10
+Accuracy on remaining no_data: 0.9896521989077322
+```
+
+We can see here that the model quality is stronger, with 10 RF modeel providing all around 99% of accuracy on the "no data" that we not used in the training/test sets. It thus highlights the benefit of using Random Forest algorithms in such cases instead of SVM !
+
 ## Code and jupyter notebook available
 
 The jupyter notebook released on Kaggle is available here: https://www.kaggle.com/code/celerse/bank-marketing-features-selections-and-acc-0-99
