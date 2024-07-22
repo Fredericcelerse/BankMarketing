@@ -43,7 +43,7 @@ no_data.iloc[:,:-1] = preprocess_data(no_data.iloc[:,:-1])
 yes_data.iloc[:,:-1] = scaler.fit_transform(yes_data.iloc[:,:-1])
 no_data.iloc[:,:-1] = scaler.fit_transform(no_data.iloc[:,:-1])
 
-# We make PCA analysis
+# We perform PCA analysis
 from sklearn.decomposition import PCA
 pca = PCA(n_components=2)
 yes_pca = pca.fit_transform(yes_data)
@@ -58,7 +58,7 @@ plt.ylabel('PCA 2')
 plt.title('PCA on the yes_data')
 plt.grid(True)
 #plt.show()
-plt.savefig("PCA.png", dpi=600)
+#plt.savefig("PCA.png", dpi=600)
 
 # We extract the most diverse "no data"
 n_yes = yes_data.shape[0]
@@ -72,8 +72,7 @@ remaining_no_data = no_data.drop(diverse_no_data.index)
 diverse_no_data.to_csv("Databases/diverse_no_data.csv", index=False)
 remaining_no_data.to_csv("Databases/remaining_no_data.csv", index=False)
 
-# We create new combined features
-
+# We create new features
 combined_data = pd.concat([yes_data, diverse_no_data])
 
 X_features_new = combined_data.iloc[:,:-1]
@@ -101,36 +100,29 @@ print(new_sorted_correlations[:5])  # Print only the 5 best correlations
 
 new_best_features = [feature for feature, corr in new_sorted_correlations[:5]]
 
-# And we finally build and train our SVM model
-
+# We finally build and train different Random Forest models
+# We make 10 tests of splitting of the selected database and we train each time a RF with standard hyperparameters and we report the result
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-import seaborn as sns
-X_train_new, X_test_new, y_train_new, y_test_new = train_test_split(X_features_enhanced[new_best_features], y_target_new, test_size=0.2, random_state=666)
-print(X_train_new)
-if y_train_new.dtype == 'object':
-    le = LabelEncoder()
-    y_train_new = le.fit_transform(y_train_new)
-if y_test_new.dtype == 'object':
-    le = LabelEncoder()
-    y_test_new = le.fit_transform(y_test_new)
-print(y_train_new)
-model = SVC(probability=True, random_state=123)
-model.fit(X_train_new, y_train_new)
-y_pred_new = model.predict(X_test_new)
-print(f'Optimized Accuracy: {accuracy_score(y_test_new, y_pred_new)}')
-print('Optimized Classification Report:')
-print(classification_report(y_test_new, y_pred_new))
-print('Optimized Confusion Matrix:')
-cm_new = confusion_matrix(y_test_new, y_pred_new)
-sns.heatmap(cm_new, annot=True, fmt='d')
-plt.xlabel('Predicted')
-plt.ylabel('Actual')
-#plt.show()
-plt.savefig("Confusion_matrix.png", dpi=600)
 
-# We finally compare with the remaining "no" data
+models_RF = []
+for i in range(10):
+    print("Training {}:".format(i+1))
+    X_train_new, X_test_new, y_train_new, y_test_new = train_test_split(X_features_enhanced[new_best_features], y_target_new, test_size=0.2)
+    if y_train_new.dtype == 'object':
+        le = LabelEncoder()
+        y_train_new = le.fit_transform(y_train_new)
+    if y_test_new.dtype == 'object':
+        le = LabelEncoder()
+        y_test_new = le.fit_transform(y_test_new)
+    model_RF = RandomForestClassifier()
+    model_RF.fit(X_train_new, y_train_new)
+    y_pred_new = model_RF.predict(X_test_new)
+    print(f'Optimized Accuracy: {accuracy_score(y_test_new, y_pred_new)}')
+    models_RF.append(model_RF)
+
+# We now test the 10 different models on the remaining data
 
 X_remaining = remaining_no_data.drop('y', axis=1)
 y_remaining = remaining_no_data['y']
@@ -145,8 +137,8 @@ if y.dtype == 'object':
     le = LabelEncoder()
     y = le.fit_transform(y)
 
-y_remaining_pred = model.predict(X)
-
-remaining_accuracy = accuracy_score(y, y_remaining_pred)
-print(f'Accuracy on remaining no_data: {remaining_accuracy}')
-
+for i in range(10):
+    print("Test {}".format(i+1))
+    y_remaining_pred = models_RF[i].predict(X)
+    remaining_accuracy = accuracy_score(y, y_remaining_pred)
+    print(f'Accuracy on remaining no_data: {remaining_accuracy}')
